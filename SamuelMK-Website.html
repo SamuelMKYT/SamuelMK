@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SamuelMK | The Site!</title>
+    <link href="https://fonts.googleapis.com/css2?family=Titan+One&family=Fredoka:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --pink: #ff006e;
+            --blue: #3a86ff;
+            --yellow: #ffbe0b;
+            --purple: #8338ec;
+            --white: #ffffff;
+            --dark-blue: #240046;
+        }
+        body {
+            margin:0; padding:0;
+            font-family:'Fredoka',sans-serif;
+            background:linear-gradient(135deg,#8338ec 0%,#3a86ff 100%);
+            color:var(--white);
+            overflow-x:hidden;
+        }
+
+        /* Loading Screen */
+        #loading-screen {
+            position: fixed; top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: linear-gradient(135deg, #8338ec, #3a86ff);
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            z-index: 9999; transition: opacity 0.8s ease;
+        }
+        #loading-text {
+            font-family: 'Titan One', cursive;
+            font-size: 5.5rem; color: white;
+            -webkit-text-stroke: 8px #ff006e;
+            text-shadow: 6px 6px 0 #240046;
+        }
+        .loading-tip {
+            margin-top: 30px; font-size: 1.4rem; font-weight: 600;
+            text-align: center; min-height: 60px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.4);
+        }
+
+        h1, h2, .logo, nav a {
+            font-family: 'Titan One', cursive !important;
+            text-transform: uppercase; letter-spacing: 2px;
+        }
+        header { background:var(--pink); padding:15px 20px; display:flex; justify-content:space-between; align-items:center; border-bottom:8px solid var(--dark-blue); position:sticky; top:0; z-index:100; }
+        .logo { font-size:1.9rem; -webkit-text-stroke:2.5px var(--dark-blue); text-shadow:4px 4px 0 var(--dark-blue); }
+        nav a { color:white; margin:0 15px; text-decoration:none; font-size:1.15rem; -webkit-text-stroke:1px var(--dark-blue); }
+
+        .hero { text-align:center; padding:80px 20px; background:radial-gradient(circle,rgba(255,255,255,0.2)0%,rgba(255,255,255,0)70%); }
+        .hero h1 { font-size:5.2rem; margin:0; -webkit-text-stroke:4px var(--dark-blue); text-shadow:6px 6px 0 var(--dark-blue); }
+
+        .btn {
+            padding:18px 45px; font-family:'Titan One',cursive; font-size:1.5rem;
+            background:var(--yellow); color:var(--dark-blue); border:none; border-radius:50px;
+            box-shadow:0 8px 0 #cc9900; text-decoration:none; display:inline-block; margin:15px;
+        }
+        .btn:active { transform:translateY(4px); box-shadow:0 4px 0 #cc9900; }
+        .btn-subscribe { animation:bounce 2s infinite; }
+        @keyframes bounce { 0%,20%,50%,80%,100%{transform:translateY(0)} 40%{transform:translateY(-10px)} 60%{transform:translateY(-5px)} }
+
+        .content-section { max-width:1200px; margin:50px auto; padding:20px; }
+        h2 { font-size:3.1rem; -webkit-text-stroke:3.5px var(--dark-blue); text-shadow:5px 5px 0 var(--dark-blue); margin-bottom:30px; }
+
+        .video-grid, .small-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px; margin-top: 30px;
+        }
+        .video-card {
+            background: var(--white); border-radius: 30px; overflow: hidden; border: 6px solid var(--dark-blue);
+            transition: transform 0.3s; text-decoration: none; color: inherit;
+        }
+        .video-card:hover { transform: scale(1.05) rotate(1deg); }
+        .thumbnail { position: relative; width: 100%; height: 200px; }
+        .thumbnail img { width: 100%; height: 100%; object-fit: cover; }
+        .play-btn { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 3.5rem; color: white; text-shadow: 0 0 15px rgba(0,0,0,0.9); }
+
+        .card-info h3 { font-family: 'Fredoka', sans-serif; color: var(--dark-blue); margin: 0; font-size: 1.15rem; font-weight: 600; }
+
+        /* Game & Discord Banner */
+        .game-banner, .discord-banner {
+            background: var(--white); border-radius: 35px; overflow: hidden; border: 8px solid var(--dark-blue);
+            box-shadow: 0 10px 0 var(--dark-blue); margin: 20px auto; max-width: 1100px;
+        }
+        .game-banner img, .discord-banner img { width: 100%; height: auto; display: block; }
+
+        .game-text, .discord-text {
+            background: rgba(255,255,255,0.97); padding: 25px; text-align: center; border-top: 6px solid var(--dark-blue);
+        }
+        .game-text h3, .discord-text h3 {
+            font-family: 'Titan One', cursive; font-size: 2.5rem;
+            -webkit-text-stroke: 4px #000; text-shadow: 4px 4px 0 #000; color: var(--dark-blue);
+        }
+
+        .channel-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 25px; margin-top: 30px;
+        }
+        .channel-card {
+            background:var(--white); border-radius:30px; overflow:hidden; border:6px solid var(--dark-blue);
+            text-align:center; padding:20px 15px; text-decoration:none; color:inherit; transition: transform 0.3s;
+        }
+        .channel-card:hover { transform: scale(1.08); }
+        .channel-card img {
+            width: 130px; height: 130px; border-radius: 50%; border: 6px solid var(--dark-blue); object-fit: cover; margin-bottom: 15px;
+        }
+        .channel-card strong { font-family: 'Fredoka', sans-serif; font-size: 1.3rem; color: var(--dark-blue); }
+    </style>
+</head>
+<body>
+
+    <!-- LOADING SCREEN -->
+    <div id="loading-screen">
+        <div id="loading-text">LOADING</div>
+        <div class="loading-tip" id="tip">Welcome to the Blunderdome...</div>
+    </div>
+
+    <header>
+        <div class="logo">SamuelMK</div>
+        <nav>
+            <a href="#games">MY GAMES</a>
+            <a href="#discord">DISCORD</a>
+            <a href="#channels">OTHER CHANNELS</a>
+            <a href="https://youtube.com/channel/UCdbwr-NfGINA6QjbWc9nCsQ" target="_blank">MAIN CHANNEL</a>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <h1>Beans</h1>
+        <p>of the Blunderdome, welcome to the site!</p>
+        <a href="https://youtube.com/channel/UCdbwr-NfGINA6QjbWc9nCsQ" target="_blank" class="btn btn-subscribe">GRAB THE CROWN (SUBSCRIBE)</a>
+    </section>
+
+    <div class="content-section">
+        <h2>Latest Rounds (Videos)</h2>
+        <div class="video-grid" id="main-videos"></div>
+        <h2 style="margin-top:70px;">Shorts</h2>
+        <div class="small-grid" id="shorts"></div>
+    </div>
+
+    <!-- MY GAMES -->
+    <div class="content-section" id="games">
+        <h2>MY GAMES</h2>
+        <a href="https://beanclicker.vercel.app/" target="_blank" class="game-banner">
+            <img src="https://plain-weur-prod-public.komododecks.com/202605/08/RfsNV8yLG9o1XGCV0JG8/image.png" alt="Bean Clicker">
+            <div class="game-text">
+                <h3>Bean Clicker</h3>
+                <p>Click beans. Get Crowns. Become the ultimate Bean King! 👑</p>
+            </div>
+        </a>
+    </div>
+
+    <!-- DISCORD SERVER -->
+    <div class="content-section" id="discord">
+        <h2>JOIN THE DISCORD</h2>
+        <a href="https://discord.gg/Ggd3fJnPaC" target="_blank" class="game-banner discord-banner">
+            <div style="height: 340px; background: linear-gradient(#7289da, #5865f2); display: flex; align-items: center; justify-content: center; font-size: 4.5rem; color: white; text-shadow: 5px 5px 0 #000;">
+                🎮 DISCORD
+            </div>
+            <div class="discord-text">
+                <h3>SamuelMK Official Discord</h3>
+                <p>Join the Bean Army! Memes, giveaways, Fall Guys squads & more!</p>
+                <div style="margin-top: 20px;">
+                    <span class="btn" style="background:#5865f2; color:white; box-shadow:0 8px 0 #404eed; font-size:1.4rem;">JOIN SERVER →</span>
+                </div>
+            </div>
+        </a>
+    </div>
+
+    <!-- OTHER CHANNELS -->
+    <div class="content-section" id="channels">
+        <h2>Other Channels!</h2>
+        <div class="channel-grid" id="other-channels"></div>
+    </div>
+
+    <footer>
+        <p style="font-size:1.1rem;">Made By SamuelMK (0.1)</p>
+        <p style="font-size:1.1rem;">Purely for fun, not affiliated with Fall Guys.</p>
+    </footer>
+
+    <script>
+        // Loading Tips
+        const tips = [
+            "Like And Subscribe! ❤️",
+            "SamuelMK said this website is so cool!",
+            "Bean Clicker is ALIVE! 🟡",
+            "Welcome to the Blunderdome!",
+            "Don't forget to grab your crown!",
+            "Fall Guys + SamuelMK = Chaos!",
+            "Made with pure bean energy!"
+        ];
+        let tipIndex = 0;
+        const tipElement = document.getElementById("tip");
+
+        function changeTip() {
+            tipElement.style.opacity = "0";
+            setTimeout(() => {
+                tipElement.textContent = tips[tipIndex];
+                tipElement.style.opacity = "1";
+                tipIndex = (tipIndex + 1) % tips.length;
+            }, 1000);
+        }
+        setInterval(changeTip, 1000);
+        changeTip();
+
+        // Hide loading screen
+        window.addEventListener("load", () => {
+            setTimeout(() => {
+                const loader = document.getElementById("loading-screen");
+                loader.style.opacity = "0";
+                setTimeout(() => loader.style.display = "none", 3000);
+            }, 4000);
+        });
+
+        // YouTube Scripts
+        const API_KEY = "AIzaSyBCR1Z5rJxhZ8TVB2Pfqxysp6LJQsUHxgc";
+        const MAIN_CHANNEL = "UCdbwr-NfGINA6QjbWc9nCsQ";
+
+        const otherChannels = [
+            { id: "UC92QFGwLLQ92DSsRxmr1Jzg", name: "@SamuelMK2", url: "https://www.youtube.com/@SamuelMK2", pfp: "https://yt3.googleusercontent.com/O20hnazHpf0OkPkoRY-7BtLZ4ekwuhmeEyIUCk4CrSysnr81ZSMKFbRP81waRFA7kc4Fvrn9=s160-c-k-c0x00ffffff-no-rj" },
+            { id: "", name: "@SamuelMKCreative", url: "https://www.youtube.com/@samuelmkcreative", pfp: "https://yt3.googleusercontent.com/Rwv3ZUYCT6WwLwOZpfMWZESfuaPue4Cfqdiu4ZtUJo-hKHroUVFQyXuYGJ0CVOQ4pu3fGCqAfg=s160-c-k-c0x00ffffff-no-rj" },
+            { id: "", name: "@SamuelMKClips", url: "https://www.youtube.com/@SamuelMKClips", pfp: "https://yt3.googleusercontent.com/vYw7KEJXNH3U9hz_w55BfJ_TR6w9_kb6cWiAAHevB219PUG3MdSAWxYC2RQIhQc6MYbEwdfx8OA=s160-c-k-c0x00ffffff-no-rj" },
+            { id: "UCIdZ6pGl5wQUgTOjK5IZ-iw", name: "@SamuelMKFN", url: "https://www.youtube.com/@SamuelMKFN", pfp: "https://yt3.googleusercontent.com/e73-SFU5XRocd1cgvCPv0AMCbcEHBTcwNlQtIKNHqZJqsIxDp40DSotswJWowlbGFCqS-V0JXg=s160-c-k-c0x00ffffff-no-rj" }
+        ];
+
+        async function fetchYouTubeData() {
+            const base = `https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=${MAIN_CHANNEL}&maxResults=3&order=date&key=${API_KEY}`;
+            renderCards("main-videos", base + "&type=video&videoDuration=medium");
+            renderCards("shorts", base + "&type=video&videoDuration=short");
+        }
+
+        async function renderCards(containerId, url) {
+            const container = document.getElementById(containerId);
+            container.innerHTML = "";
+            try {
+                const res = await fetch(url);
+                const data = await res.json();
+                data.items.forEach(item => {
+                    const videoId = item.id.videoId;
+                    const title = item.snippet.title;
+                    const thumb = item.snippet.thumbnails.high.url;
+                    const card = document.createElement("a");
+                    card.href = `https://www.youtube.com/watch?v=${videoId}`;
+                    card.target = "_blank";
+                    card.className = "video-card";
+                    card.innerHTML = `
+                        <div class="thumbnail">
+                            <img src="${thumb}" alt="${title}">
+                            <div class="play-btn">▶</div>
+                        </div>
+                        <div class="card-info">
+                            <h3>${title}</h3>
+                        </div>
+                    `;
+                    container.appendChild(card);
+                });
+            } catch(e) {}
+        }
+
+        async function loadOtherChannels() {
+            const container = document.getElementById("other-channels");
+            container.innerHTML = "";
+            for (let ch of otherChannels) {
+                const card = document.createElement("a");
+                card.href = ch.url;
+                card.target = "_blank";
+                card.className = "channel-card";
+                card.innerHTML = `<img src="${ch.pfp}" alt="${ch.name}"><strong>${ch.name}</strong>`;
+                container.appendChild(card);
+            }
+        }
+
+        fetchYouTubeData();
+        loadOtherChannels();
+    </script>
+</body>
+</html>
