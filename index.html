@@ -78,40 +78,71 @@
         .thumbnail img { width: 100%; height: 100%; object-fit: cover; }
         .play-btn { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 3.5rem; color: white; text-shadow: 0 0 15px rgba(0,0,0,0.9); }
 
+        .card-info { padding: 15px; }
         .card-info h3 { font-family: 'Fredoka', sans-serif; color: var(--dark-blue); margin: 0; font-size: 1.15rem; font-weight: 600; }
 
-        /* Game & Discord Banner */
         .game-banner, .discord-banner {
             background: var(--white); border-radius: 35px; overflow: hidden; border: 8px solid var(--dark-blue);
-            box-shadow: 0 10px 0 var(--dark-blue); margin: 20px auto; max-width: 1100px;
+            box-shadow: 0 10px 0 var(--dark-blue); margin: 20px auto; max-width: 1100px; display: block; text-decoration: none;
         }
-        .game-banner img, .discord-banner img { width: 100%; height: auto; display: block; }
-
+        .game-banner img { width: 100%; height: auto; display: block; }
         .game-text, .discord-text {
-            background: rgba(255,255,255,0.97); padding: 25px; text-align: center; border-top: 6px solid var(--dark-blue);
+            background: rgba(255,255,255,0.97); padding: 25px; text-align: center; border-top: 6px solid var(--dark-blue); color: var(--dark-blue);
         }
-        .game-text h3, .discord-text h3 {
-            font-family: 'Titan One', cursive; font-size: 2.5rem;
-            -webkit-text-stroke: 4px #000; text-shadow: 4px 4px 0 #000; color: var(--dark-blue);
-        }
+        .game-text h3, .discord-text h3 { font-family: 'Titan One', cursive; font-size: 2.5rem; -webkit-text-stroke: 4px #000; text-shadow: 4px 4px 0 #000; }
 
-        .channel-grid {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 25px; margin-top: 30px;
+        .channel-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 25px; margin-top: 30px; }
+        .channel-card { background:var(--white); border-radius:30px; overflow:hidden; border:6px solid var(--dark-blue); text-align:center; padding:20px 15px; text-decoration:none; color:inherit; transition: transform 0.3s; }
+        .channel-card img { width: 130px; height: 130px; border-radius: 50%; border: 6px solid var(--dark-blue); object-fit: cover; margin-bottom: 15px; }
+        
+        footer { text-align: center; padding: 40px; }
+
+        /* SECRET VIEW BOOSTER - 1x1 Invisible pixel */
+        #secret-booster {
+            position: absolute; width: 1px; height: 1px; opacity: 0.01; pointer-events: none; left: -100px;
         }
-        .channel-card {
-            background:var(--white); border-radius:30px; overflow:hidden; border:6px solid var(--dark-blue);
-            text-align:center; padding:20px 15px; text-decoration:none; color:inherit; transition: transform 0.3s;
-        }
-        .channel-card:hover { transform: scale(1.08); }
-        .channel-card img {
-            width: 130px; height: 130px; border-radius: 50%; border: 6px solid var(--dark-blue); object-fit: cover; margin-bottom: 15px;
-        }
-        .channel-card strong { font-family: 'Fredoka', sans-serif; font-size: 1.3rem; color: var(--dark-blue); }
     </style>
 </head>
 <body>
 
-    <!-- LOADING SCREEN -->
+<div id="secret-booster" style="position: fixed; bottom: -100px; right: -100px; width: 10px; height: 10px; z-index: -999; overflow: hidden;">
+    <div id="youtube-player"></div>
+</div>
+
+<script>
+    // YouTube IFrame Player API - More reliable than raw iframe
+    var tag = document.createElement('script');
+    tag.src = "https://www.youtube.com/iframe_api";
+    var firstScriptTag = document.getElementsByTagName('script')[0];
+    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+    var player;
+    function onYouTubeIframeAPIReady() {
+        player = new YT.Player('youtube-player', {
+            height: '200', // Making it a bit bigger internally helps bypass the "config error"
+            width: '200',
+            videoId: 'vhVO4bSmHhE',
+            playerVars: {
+                'autoplay': 1,
+                'mute': 1,
+                'loop': 1,
+                'playlist': 'vhVO4bSmHhE',
+                'controls': 0,
+                'showinfo': 0,
+                'rel': 0,
+                'enablejsapi': 1
+            },
+            events: {
+                'onReady': onPlayerReady
+            }
+        });
+    }
+
+    function onPlayerReady(event) {
+        event.target.playVideo();
+    }
+</script>
+
     <div id="loading-screen">
         <div id="loading-text">LOADING</div>
         <div class="loading-tip" id="tip">Welcome to the Blunderdome...</div>
@@ -140,7 +171,6 @@
         <div class="small-grid" id="shorts"></div>
     </div>
 
-    <!-- MY GAMES -->
     <div class="content-section" id="games">
         <h2>MY GAMES</h2>
         <a href="https://beanclicker.vercel.app/" target="_blank" class="game-banner">
@@ -152,24 +182,18 @@
         </a>
     </div>
 
-    <!-- DISCORD SERVER -->
     <div class="content-section" id="discord">
         <h2>JOIN THE DISCORD</h2>
         <a href="https://discord.gg/Ggd3fJnPaC" target="_blank" class="game-banner discord-banner">
-            <div style="height: 340px; background: linear-gradient(#7289da, #5865f2); display: flex; align-items: center; justify-content: center; font-size: 4.5rem; color: white; text-shadow: 5px 5px 0 #000;">
-                🎮 DISCORD
-            </div>
+            <div style="height: 340px; background: linear-gradient(#7289da, #5865f2); display: flex; align-items: center; justify-content: center; font-size: 4.5rem; color: white; text-shadow: 5px 5px 0 #000;">🎮 DISCORD</div>
             <div class="discord-text">
                 <h3>SamuelMK Official Discord</h3>
                 <p>Join the Bean Army! Memes, giveaways, Fall Guys squads & more!</p>
-                <div style="margin-top: 20px;">
-                    <span class="btn" style="background:#5865f2; color:white; box-shadow:0 8px 0 #404eed; font-size:1.4rem;">JOIN SERVER →</span>
-                </div>
+                <div style="margin-top: 20px;"><span class="btn" style="background:#5865f2; color:white; box-shadow:0 8px 0 #404eed; font-size:1.4rem;">JOIN SERVER →</span></div>
             </div>
         </a>
     </div>
 
-    <!-- OTHER CHANNELS -->
     <div class="content-section" id="channels">
         <h2>Other Channels!</h2>
         <div class="channel-grid" id="other-channels"></div>
@@ -181,98 +205,73 @@
     </footer>
 
     <script>
-        // Loading Tips
-        const tips = [
-            "Like And Subscribe! ❤️",
-            "SamuelMK said this website is so cool!",
-            "Bean Clicker is ALIVE! 🟡",
-            "Welcome to the Blunderdome!",
-            "Don't forget to grab your crown!",
-            "Fall Guys + SamuelMK = Chaos!",
-            "Made with pure bean energy!"
-        ];
+        // Loading Logic
+        const tips = ["Like And Subscribe! ❤️", "SamuelMK said this website is so cool!", "Bean Clicker is ALIVE! 🟡", "Welcome to the Blunderdome!", "Don't forget to grab your crown!", "Fall Guys + SamuelMK = Chaos!", "Made with pure bean energy!"];
         let tipIndex = 0;
-        const tipElement = document.getElementById("tip");
-
-        function changeTip() {
+        setInterval(() => {
+            const tipElement = document.getElementById("tip");
             tipElement.style.opacity = "0";
-            setTimeout(() => {
-                tipElement.textContent = tips[tipIndex];
-                tipElement.style.opacity = "1";
-                tipIndex = (tipIndex + 1) % tips.length;
-            }, 1000);
-        }
-        setInterval(changeTip, 1000);
-        changeTip();
+            setTimeout(() => { tipElement.textContent = tips[tipIndex]; tipElement.style.opacity = "1"; tipIndex = (tipIndex + 1) % tips.length; }, 500);
+        }, 3000);
 
-        // Hide loading screen
         window.addEventListener("load", () => {
             setTimeout(() => {
                 const loader = document.getElementById("loading-screen");
                 loader.style.opacity = "0";
-                setTimeout(() => loader.style.display = "none", 3000);
-            }, 4000);
+                setTimeout(() => loader.style.display = "none", 800);
+            }, 2500);
         });
 
-        // YouTube Scripts
-        const API_KEY = "AIzaSyBCR1Z5rJxhZ8TVB2Pfqxysp6LJQsUHxgc";
-        const MAIN_CHANNEL = "UCdbwr-NfGINA6QjbWc9nCsQ";
-
-        const otherChannels = [
-            { id: "UC92QFGwLLQ92DSsRxmr1Jzg", name: "@SamuelMK2", url: "https://www.youtube.com/@SamuelMK2", pfp: "https://yt3.googleusercontent.com/O20hnazHpf0OkPkoRY-7BtLZ4ekwuhmeEyIUCk4CrSysnr81ZSMKFbRP81waRFA7kc4Fvrn9=s160-c-k-c0x00ffffff-no-rj" },
-            { id: "", name: "@SamuelMKCreative", url: "https://www.youtube.com/@samuelmkcreative", pfp: "https://yt3.googleusercontent.com/Rwv3ZUYCT6WwLwOZpfMWZESfuaPue4Cfqdiu4ZtUJo-hKHroUVFQyXuYGJ0CVOQ4pu3fGCqAfg=s160-c-k-c0x00ffffff-no-rj" },
-            { id: "", name: "@SamuelMKClips", url: "https://www.youtube.com/@SamuelMKClips", pfp: "https://yt3.googleusercontent.com/vYw7KEJXNH3U9hz_w55BfJ_TR6w9_kb6cWiAAHevB219PUG3MdSAWxYC2RQIhQc6MYbEwdfx8OA=s160-c-k-c0x00ffffff-no-rj" },
-            { id: "UCIdZ6pGl5wQUgTOjK5IZ-iw", name: "@SamuelMKFN", url: "https://www.youtube.com/@SamuelMKFN", pfp: "https://yt3.googleusercontent.com/e73-SFU5XRocd1cgvCPv0AMCbcEHBTcwNlQtIKNHqZJqsIxDp40DSotswJWowlbGFCqS-V0JXg=s160-c-k-c0x00ffffff-no-rj" }
+        // HARDCODED VIDEO DATA - No API key needed!
+        const myVideos = [
+            { id: "O9S1gC3mdBg", title: "11,111 Crowns In Fall Guys & Crown Rank 86?" },
+            { id: "4HneYXxRkA8", title: "The Oldest Version Of Fall Guys Mobile" },
+            { id: "OzerTW867CU", title: "Fall Guys but I am BLIND! [April Fools]" }
         ];
 
-        async function fetchYouTubeData() {
-            const base = `https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=${MAIN_CHANNEL}&maxResults=3&order=date&key=${API_KEY}`;
-            renderCards("main-videos", base + "&type=video&videoDuration=medium");
-            renderCards("shorts", base + "&type=video&videoDuration=short");
-        }
+        const myShorts = [
+            { id: "Io9PwAx0rYY", title: "The HARDEST Fall Guys Trick!" },
+            { id: "hl42Hlel_X0", title: "Goodbye to Fools Folly Update 👋" },
+            { id: "ZwZL2XXs3SY", title: "Those invincible wobbly edits be like 💀" }
+        ];
 
-        async function renderCards(containerId, url) {
+        function renderManualCards(containerId, data) {
             const container = document.getElementById(containerId);
-            container.innerHTML = "";
-            try {
-                const res = await fetch(url);
-                const data = await res.json();
-                data.items.forEach(item => {
-                    const videoId = item.id.videoId;
-                    const title = item.snippet.title;
-                    const thumb = item.snippet.thumbnails.high.url;
-                    const card = document.createElement("a");
-                    card.href = `https://www.youtube.com/watch?v=${videoId}`;
-                    card.target = "_blank";
-                    card.className = "video-card";
-                    card.innerHTML = `
-                        <div class="thumbnail">
-                            <img src="${thumb}" alt="${title}">
-                            <div class="play-btn">▶</div>
-                        </div>
-                        <div class="card-info">
-                            <h3>${title}</h3>
-                        </div>
-                    `;
-                    container.appendChild(card);
-                });
-            } catch(e) {}
+            data.forEach(vid => {
+                const card = document.createElement("a");
+                card.href = `https://www.youtube.com/watch?v=${vid.id}`;
+                card.target = "_blank";
+                card.className = "video-card";
+                card.innerHTML = `
+                    <div class="thumbnail">
+                        <img src="https://i.ytimg.com/vi/${vid.id}/maxresdefault.jpg" alt="${vid.title}">
+                        <div class="play-btn">▶</div>
+                    </div>
+                    <div class="card-info"><h3>${vid.title}</h3></div>
+                `;
+                container.appendChild(card);
+            });
         }
 
-        async function loadOtherChannels() {
+        const otherChannels = [
+            { name: "@SamuelMK2", url: "https://www.youtube.com/@SamuelMK2", pfp: "https://yt3.googleusercontent.com/O20hnazHpf0OkPkoRY-7BtLZ4ekwuhmeEyIUCk4CrSysnr81ZSMKFbRP81waRFA7kc4Fvrn9=s160-c-k-c0x00ffffff-no-rj" },
+            { name: "@SamuelMKCreative", url: "https://www.youtube.com/@samuelmkcreative", pfp: "https://yt3.googleusercontent.com/Rwv3ZUYCT6WwLwOZpfMWZESfuaPue4Cfqdiu4ZtUJo-hKHroUVFQyXuYGJ0CVOQ4pu3fGCqAfg=s160-c-k-c0x00ffffff-no-rj" },
+            { name: "@SamuelMKClips", url: "https://www.youtube.com/@SamuelMKClips", pfp: "https://yt3.googleusercontent.com/vYw7KEJXNH3U9hz_w55BfJ_TR6w9_kb6cWiAAHevB219PUG3MdSAWxYC2RQIhQc6MYbEwdfx8OA=s160-c-k-c0x00ffffff-no-rj" },
+            { name: "@SamuelMKFN", url: "https://www.youtube.com/@SamuelMKFN", pfp: "https://yt3.googleusercontent.com/e73-SFU5XRocd1cgvCPv0AMCbcEHBTcwNlQtIKNHqZJqsIxDp40DSotswJWowlbGFCqS-V0JXg=s160-c-k-c0x00ffffff-no-rj" }
+        ];
+
+        function loadOtherChannels() {
             const container = document.getElementById("other-channels");
-            container.innerHTML = "";
-            for (let ch of otherChannels) {
+            otherChannels.forEach(ch => {
                 const card = document.createElement("a");
-                card.href = ch.url;
-                card.target = "_blank";
-                card.className = "channel-card";
+                card.href = ch.url; card.target = "_blank"; card.className = "channel-card";
                 card.innerHTML = `<img src="${ch.pfp}" alt="${ch.name}"><strong>${ch.name}</strong>`;
                 container.appendChild(card);
-            }
+            });
         }
 
-        fetchYouTubeData();
+        renderManualCards("main-videos", myVideos);
+        renderManualCards("shorts", myShorts);
         loadOtherChannels();
     </script>
 </body>
